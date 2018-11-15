@@ -10,8 +10,8 @@ import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
 public class WordCountRunner {
     public static void main(String[] args) throws Exception {
-       System.setProperty("hadoop.home.dir","D:\\hadoop-2.7.4");
         Configuration conf = new Configuration();
+        conf.set("dfs.client.use.datanode.hostname", "true");
         Job wcjob = Job.getInstance(conf);
 //指定我这个 job 所在的 jar 包
 // wcjob.setJar("/home/hadoop/wordcount.jar");
@@ -28,9 +28,9 @@ public class WordCountRunner {
         //wcjob.setNumReduceTasks(6);
         //wcjob.setPartitionerClass(ProvincePartitioner.class);
 //指定要处理的数据所在的位置
-        FileInputFormat.setInputPaths(wcjob, "D:\\data");
+        FileInputFormat.setInputPaths(wcjob, "hdfs://node01:8020/data");
 //指定处理完成之后的结果所保存的位置
-        FileOutputFormat.setOutputPath(wcjob, new Path("D:\\data\\output"));
+        FileOutputFormat.setOutputPath(wcjob, new Path("hdfs://node01:8020/data/output"));
 //向 yarn 集群提交这个 job
         boolean res = wcjob.waitForCompletion(true);
         System.exit(res?0:1);

@@ -16,7 +16,7 @@ import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
 
-public class ExcelContactCount  extends Configured implements Tool{
+public class ExcelContactCount extends Configured implements Tool {
     public static class PhoneMapper extends Mapper<LongWritable, Text, Text, Text> {
 
         public void map(LongWritable key, Text value, Context context) throws InterruptedException, IOException {
@@ -24,14 +24,14 @@ public class ExcelContactCount  extends Configured implements Tool{
             Text pvalue = new Text();
             // 1.0, 老爸, 13999123786, 2014-12-20
             String line = value.toString();
-
-            String[] records = line.split("\\s+");
+            System.out.println(line);
+           /* String[] records = line.split("\\s+");
             // 获取月份
             String[] months = records[3].split("-");
             // 昵称+月份
             pkey.set(records[1] + "\t" + months[1]);
             // 手机号
-            pvalue.set(records[2]);
+            pvalue.set(records[2]);*/
 
             context.write(pkey, pvalue);
         }
@@ -43,7 +43,7 @@ public class ExcelContactCount  extends Configured implements Tool{
             Text phone = Values.iterator().next();
             int phoneToal = 0;
 
-            for(java.util.Iterator<Text> its = Values.iterator();its.hasNext();its.next()){
+            for (java.util.Iterator<Text> its = Values.iterator(); its.hasNext(); its.next()) {
                 phoneToal++;
             }
 
@@ -58,7 +58,7 @@ public class ExcelContactCount  extends Configured implements Tool{
     public int run(String[] args) throws Exception {
         // 读取配置文件
         Configuration conf = new Configuration();
-
+        conf.set("dfs.client.use.datanode.hostname", "true");
         // 判断输出路径，如果存在，则删除
         Path mypath = new Path(args[1]);
         FileSystem hdfs = mypath.getFileSystem(conf);
@@ -67,7 +67,7 @@ public class ExcelContactCount  extends Configured implements Tool{
         }
 
         // 新建任务
-        Job job = new Job(conf,"Call Log");
+        Job job = new Job(conf, "Call Log");
         job.setJarByClass(ExcelContactCount.class);
 
         // 输入路径
@@ -90,13 +90,13 @@ public class ExcelContactCount  extends Configured implements Tool{
         // 自定义输出格式
         job.setOutputFormatClass(ExcelOutputFormat.class);
 
-        return job.waitForCompletion(true) ? 0:1;
+        return job.waitForCompletion(true) ? 0 : 1;
     }
 
     public static void main(String[] args) throws Exception {
         String[] args0 = {
-                "hdfs://ljc:9000/buaa/phone/phone.xls",
-                "hdfs://ljc:9000/buaa/phone/out/"
+                "hdfs://node01:8020/huohua/ods_rawdata/2018-11-13/d03620a5-808c-4c58-b91e-5853911de936.xls",
+                "hdfs://node01:8020/out"
         };
         int ec = ToolRunner.run(new Configuration(), new ExcelContactCount(), args0);
         System.exit(ec);
