@@ -53,7 +53,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>com.absorprofess.mapreduce.WordCountRunner</mainClass>
+                            <mainClass>cn.eone.mapreduce.WordCountRunner</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

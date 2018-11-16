@@ -1,4 +1,4 @@
-package com.absorprofess.mapreduce2;
+package cn.eone.mapreduce2;
 
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;

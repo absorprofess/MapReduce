@@ -1,4 +1,4 @@
-package com.absorprofess.excelmapreduce;
+package cn.eone.excelmapreduce;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -40,7 +40,7 @@ public class ExcelInputFormat extends FileInputFormat<LongWritable, Text> {
 
             FileSystem fileSystem = filePath.getFileSystem(job);
 
-            inputStream = fileSystem.open(split.getPath());
+            this.inputStream = fileSystem.open(split.getPath());
 
             // 调用解析excel方法
             this.strArrayofLines = ExcelParser.parseExcelData(inputStream);
@@ -51,11 +51,9 @@ public class ExcelInputFormat extends FileInputFormat<LongWritable, Text> {
             int pos = (int) key.get() + 1;
 
             if (pos < strArrayofLines.length) {
-
                 if (strArrayofLines[pos] != null) {
                     key.set(pos);
                     value.set(strArrayofLines[pos]);
-
                     return true;
                 }
             }

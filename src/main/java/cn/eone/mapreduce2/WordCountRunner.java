@@ -1,4 +1,4 @@
-package com.absorprofess.mapreduce2;
+package cn.eone.mapreduce2;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;

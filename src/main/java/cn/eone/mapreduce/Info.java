@@ -1,4 +1,4 @@
-package com.absorprofess.mapreduce;
+package cn.eone.mapreduce;
 
 import org.apache.hadoop.io.WritableComparable;
 

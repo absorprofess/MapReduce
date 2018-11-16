@@ -1,4 +1,4 @@
-package com.absorprofess.excelmapreduce;
+package cn.eone.excelmapreduce;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -60,7 +60,6 @@ public class ExcelOutputFormat extends FileOutputFormat<Text, Text> {
      */
     protected String generateFileNameForKeyValue(Text key, Text value, Configuration conf) {
         // name + month
-        System.out.println(key.toString());
         String[] records = key.toString().split(".");
         return "test.txt";
     }

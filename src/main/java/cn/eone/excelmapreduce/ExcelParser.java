@@ -1,4 +1,4 @@
-package com.absorprofess.excelmapreduce;
+package cn.eone.excelmapreduce;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -33,28 +33,35 @@ public class ExcelParser {
             HSSFSheet sheet = workbook.getSheetAt(0);
 
             Iterator<Row> rowIterator = sheet.iterator();
-
+            int i = 0;
+            String id="";
             while (rowIterator.hasNext()) {
                 // 行
                 Row row = rowIterator.next();
                 // 字符串
-                StringBuilder rowString = new StringBuilder();
-
-                Iterator<Cell> colIterator = row.cellIterator();
-                while (colIterator.hasNext()) {
-                    Cell cell = colIterator.next();
-                    if(colIterator.hasNext()){
-                        rowString.append(cell.getStringCellValue().trim() + ",");
-                    }else {
-                        rowString.append(cell.getStringCellValue().trim());
-                    }
+                i++;
+                if(i==3){
+                    id=row.cellIterator().next().getStringCellValue().trim().split("\\(")[1].split("\\)")[0];
                 }
-                resultList.add(rowString.toString());
+                if (i > 6) {
+                    StringBuilder rowString = new StringBuilder();
+
+                    Iterator<Cell> colIterator = row.cellIterator();
+                    while (colIterator.hasNext()) {
+                        Cell cell = colIterator.next();
+                        if (colIterator.hasNext()) {
+                            rowString.append(cell.getStringCellValue().trim() + ",");
+                        } else {
+                            rowString.append(cell.getStringCellValue().trim());
+                        }
+                    }
+                    resultList.add(id+","+rowString.toString());
+                }
+
             }
         } catch (IOException e) {
             logger.error("IO Exception : File not found " + e);
         }
-
         return resultList.toArray(new String[0]);
     }
 

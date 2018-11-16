@@ -1,4 +1,4 @@
-package com.absorprofess.TOPN;
+package cn.eone.TOPN;
 
 
 import org.apache.hadoop.conf.Configuration;

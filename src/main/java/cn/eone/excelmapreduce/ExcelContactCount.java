@@ -1,4 +1,4 @@
-package com.absorprofess.excelmapreduce;
+package cn.eone.excelmapreduce;
 
 import java.io.IOException;
 
@@ -10,7 +10,6 @@ import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
-import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.util.Tool;
@@ -20,15 +19,15 @@ public class ExcelContactCount extends Configured implements Tool {
     public static class PhoneMapper extends Mapper<LongWritable, Text, Text, Text> {
         public void map(LongWritable key, Text value, Context context) throws InterruptedException, IOException {
             System.out.println(value.toString());
-            context.write(new Text(value.toString()), new Text("1"));
+            context.write(new Text(value.toString()), new Text());
         }
     }
 
-    public static class PhoneReducer extends Reducer<Text, Text, Text, Text> {
+    /*public static class PhoneReducer extends Reducer<Text, Text, Text, Text> {
         protected void reduce(Text Key, Iterable<Text> Values, Context context) throws IOException, InterruptedException {
-            context.write(Key, Values.iterator().next());
+            context.write(Key, new Text());
         }
-    }
+    }*/
 
     @Override
     @SuppressWarnings("deprecation")
@@ -55,12 +54,12 @@ public class ExcelContactCount extends Configured implements Tool {
         // Mapper
         job.setMapperClass(PhoneMapper.class);
         // Reduce
-        job.setReducerClass(PhoneReducer.class);
+       /* job.setReducerClass(PhoneReducer.class);*/
 
         // 输出key类型
-        job.setOutputKeyClass(Text.class);
+        job.setMapOutputKeyClass(Text.class);
         // 输出value类型
-        job.setOutputValueClass(Text.class);
+        job.setMapOutputValueClass(Text.class);
 
         // 自定义输入格式
         job.setInputFormatClass(ExcelInputFormat.class);

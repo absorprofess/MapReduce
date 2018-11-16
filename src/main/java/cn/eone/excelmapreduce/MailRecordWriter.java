@@ -1,4 +1,4 @@
-package com.absorprofess.excelmapreduce;
+package cn.eone.excelmapreduce;
 
 import java.io.DataOutputStream;
 import java.io.IOException;

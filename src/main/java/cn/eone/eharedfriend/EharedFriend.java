@@ -1,4 +1,4 @@
-package com.absorprofess.eharedfriend;
+package cn.eone.eharedfriend;
 
 
 import org.apache.hadoop.conf.Configuration;
@@ -12,8 +12,6 @@ import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
 import java.io.IOException;
-import java.util.Comparator;
-import java.util.TreeSet;
 
 public class EharedFriend {
     static class EharedFriendMap extends Mapper<LongWritable, Text, Text, Text> {

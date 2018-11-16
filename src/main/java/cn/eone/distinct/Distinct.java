@@ -1,4 +1,4 @@
-package com.absorprofess.distinct;
+package cn.eone.distinct;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
