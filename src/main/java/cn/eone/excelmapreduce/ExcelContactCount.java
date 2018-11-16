@@ -22,19 +22,17 @@ public class ExcelContactCount extends Configured implements Tool {
             context.write(new Text(value.toString()), new Text());
         }
     }
-
     /*public static class PhoneReducer extends Reducer<Text, Text, Text, Text> {
         protected void reduce(Text Key, Iterable<Text> Values, Context context) throws IOException, InterruptedException {
             context.write(Key, new Text());
         }
     }*/
-
     @Override
     @SuppressWarnings("deprecation")
     public int run(String[] args) throws Exception {
         // 读取配置文件
         Configuration conf = new Configuration();
-        conf.set("dfs.client.use.datanode.hostname", "true");
+        conf.set("dfs.client.use.datanode.hostname","true");
         // 判断输出路径，如果存在，则删除
         Path mypath = new Path(args[1]);
         FileSystem hdfs = mypath.getFileSystem(conf);
