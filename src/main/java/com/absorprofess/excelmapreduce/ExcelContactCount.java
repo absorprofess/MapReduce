@@ -18,16 +18,15 @@ import org.apache.hadoop.util.ToolRunner;
 
 public class ExcelContactCount extends Configured implements Tool {
     public static class PhoneMapper extends Mapper<LongWritable, Text, Text, Text> {
-
         public void map(LongWritable key, Text value, Context context) throws InterruptedException, IOException {
-            context.write(new Text(value.toString()), new Text());
+            System.out.println(value.toString());
+            context.write(new Text(value.toString()), new Text("1"));
         }
     }
 
     public static class PhoneReducer extends Reducer<Text, Text, Text, Text> {
-
         protected void reduce(Text Key, Iterable<Text> Values, Context context) throws IOException, InterruptedException {
-            context.write(Key, new Text());
+            context.write(Key, Values.iterator().next());
         }
     }
 
@@ -73,7 +72,7 @@ public class ExcelContactCount extends Configured implements Tool {
 
     public static void main(String[] args) throws Exception {
         String[] args0 = {
-                "hdfs://node01:8020/huohua/ods_rawdata/2018-11-13/d03620a5-808c-4c58-b91e-5853911de936.xls",
+                "hdfs://node01:8020/huohua/ods_rawdata/2018-11-13/",
                 "hdfs://node01:8020/out"
         };
         int ec = ToolRunner.run(new Configuration(), new ExcelContactCount(), args0);

@@ -14,11 +14,10 @@ import org.apache.hadoop.mapreduce.TaskAttemptContext;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.input.FileSplit;
 
-public class ExcelInputFormat extends FileInputFormat<LongWritable,Text>{
+public class ExcelInputFormat extends FileInputFormat<LongWritable, Text> {
     @Override
     public RecordReader<LongWritable, Text> createRecordReader(InputSplit split,
                                                                TaskAttemptContext context) throws IOException, InterruptedException {
-
         return new ExcelRecordReader();
     }
 
@@ -51,9 +50,9 @@ public class ExcelInputFormat extends FileInputFormat<LongWritable,Text>{
         public boolean nextKeyValue() throws IOException, InterruptedException {
             int pos = (int) key.get() + 1;
 
-            if (pos < strArrayofLines.length){
+            if (pos < strArrayofLines.length) {
 
-                if(strArrayofLines[pos] != null){
+                if (strArrayofLines[pos] != null) {
                     key.set(pos);
                     value.set(strArrayofLines[pos]);
 

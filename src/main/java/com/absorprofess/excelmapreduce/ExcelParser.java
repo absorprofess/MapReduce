@@ -43,20 +43,12 @@ public class ExcelParser {
                 Iterator<Cell> colIterator = row.cellIterator();
                 while (colIterator.hasNext()) {
                     Cell cell = colIterator.next();
-
-                    switch (cell.getCellType()) {
-                        case Cell.CELL_TYPE_BOOLEAN:
-                            rowString.append(cell.getBooleanCellValue() + ",");
-                            break;
-                        case Cell.CELL_TYPE_NUMERIC:
-                            rowString.append(cell.getNumericCellValue() + ",");
-                            break;
-                        case Cell.CELL_TYPE_STRING:
-                            rowString.append(cell.getStringCellValue() + ",");
-                            break;
+                    if(colIterator.hasNext()){
+                        rowString.append(cell.getStringCellValue().trim() + ",");
+                    }else {
+                        rowString.append(cell.getStringCellValue().trim());
                     }
                 }
-
                 resultList.add(rowString.toString());
             }
         } catch (IOException e) {
