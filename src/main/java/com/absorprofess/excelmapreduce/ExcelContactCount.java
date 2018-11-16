@@ -20,36 +20,14 @@ public class ExcelContactCount extends Configured implements Tool {
     public static class PhoneMapper extends Mapper<LongWritable, Text, Text, Text> {
 
         public void map(LongWritable key, Text value, Context context) throws InterruptedException, IOException {
-            Text pkey = new Text();
-            Text pvalue = new Text();
-            // 1.0, 老爸, 13999123786, 2014-12-20
-            String line = value.toString();
-            System.out.println(line);
-           /* String[] records = line.split("\\s+");
-            // 获取月份
-            String[] months = records[3].split("-");
-            // 昵称+月份
-            pkey.set(records[1] + "\t" + months[1]);
-            // 手机号
-            pvalue.set(records[2]);*/
-
-            context.write(pkey, pvalue);
+            context.write(new Text(value.toString()), new Text());
         }
     }
 
     public static class PhoneReducer extends Reducer<Text, Text, Text, Text> {
 
         protected void reduce(Text Key, Iterable<Text> Values, Context context) throws IOException, InterruptedException {
-            Text phone = Values.iterator().next();
-            int phoneToal = 0;
-
-            for (java.util.Iterator<Text> its = Values.iterator(); its.hasNext(); its.next()) {
-                phoneToal++;
-            }
-
-            Text pvalue = new Text(phone + "\t" + phoneToal);
-
-            context.write(Key, pvalue);
+            context.write(Key, new Text());
         }
     }
 

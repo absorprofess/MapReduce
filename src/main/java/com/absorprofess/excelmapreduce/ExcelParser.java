@@ -46,13 +46,13 @@ public class ExcelParser {
 
                     switch (cell.getCellType()) {
                         case Cell.CELL_TYPE_BOOLEAN:
-                            rowString.append(cell.getBooleanCellValue() + "\t");
+                            rowString.append(cell.getBooleanCellValue() + ",");
                             break;
                         case Cell.CELL_TYPE_NUMERIC:
-                            rowString.append(cell.getNumericCellValue() + "\t");
+                            rowString.append(cell.getNumericCellValue() + ",");
                             break;
                         case Cell.CELL_TYPE_STRING:
-                            rowString.append(cell.getStringCellValue() + "\t");
+                            rowString.append(cell.getStringCellValue() + ",");
                             break;
                     }
                 }

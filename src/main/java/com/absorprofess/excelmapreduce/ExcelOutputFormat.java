@@ -18,12 +18,12 @@ import org.apache.hadoop.mapreduce.lib.output.FileOutputCommitter;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.util.ReflectionUtils;
 
-public class ExcelOutputFormat  extends FileOutputFormat<Text,Text>{
+public class ExcelOutputFormat extends FileOutputFormat<Text, Text> {
     // MultiRecordWriter对象
     private MultiRecordWriter writer = null;
 
     @Override
-    public RecordWriter<Text,Text> getRecordWriter(TaskAttemptContext job) throws IOException,
+    public RecordWriter<Text, Text> getRecordWriter(TaskAttemptContext job) throws IOException,
             InterruptedException {
         if (writer == null) {
             writer = new MultiRecordWriter(job, getTaskOutputPath(job));
@@ -58,18 +58,19 @@ public class ExcelOutputFormat  extends FileOutputFormat<Text,Text>{
      * @param conf
      * @return String
      */
-    protected String generateFileNameForKeyValue(Text key, Text value, Configuration conf){
+    protected String generateFileNameForKeyValue(Text key, Text value, Configuration conf) {
         // name + month
-        String[] records = key.toString().split("\t");
-        return records[1] + ".txt";
+        System.out.println(key.toString());
+        String[] records = key.toString().split(".");
+        return "test.txt";
     }
 
     /**
      * 定义MultiRecordWriter
      */
-    public class MultiRecordWriter extends RecordWriter<Text,Text> {
+    public class MultiRecordWriter extends RecordWriter<Text, Text> {
         // RecordWriter的缓存
-        private HashMap<String, RecordWriter<Text,Text>> recordWriters = null;
+        private HashMap<String, RecordWriter<Text, Text>> recordWriters = null;
         // TaskAttemptContext
         private TaskAttemptContext job = null;
         // 输出目录
@@ -79,14 +80,14 @@ public class ExcelOutputFormat  extends FileOutputFormat<Text,Text>{
             super();
             this.job = job;
             this.workPath = workPath;
-            this.recordWriters = new HashMap<String, RecordWriter<Text,Text>>();
+            this.recordWriters = new HashMap<String, RecordWriter<Text, Text>>();
         }
 
         @Override
         public void write(Text key, Text value) throws IOException, InterruptedException {
             // 得到输出文件名
             String baseName = generateFileNameForKeyValue(key, value, job.getConfiguration());
-            RecordWriter<Text,Text> rw = this.recordWriters.get(baseName);
+            RecordWriter<Text, Text> rw = this.recordWriters.get(baseName);
             if (rw == null) {
                 rw = getBaseRecordWriter(job, baseName);
                 this.recordWriters.put(baseName, rw);
@@ -94,7 +95,7 @@ public class ExcelOutputFormat  extends FileOutputFormat<Text,Text>{
             rw.write(key, value);
         }
 
-        private RecordWriter<Text,Text> getBaseRecordWriter(TaskAttemptContext job, String baseName)
+        private RecordWriter<Text, Text> getBaseRecordWriter(TaskAttemptContext job, String baseName)
                 throws IOException, InterruptedException {
             Configuration conf = job.getConfiguration();
 
@@ -102,7 +103,7 @@ public class ExcelOutputFormat  extends FileOutputFormat<Text,Text>{
             //key value 分隔符
             String keyValueSeparator = "\t";
 
-            RecordWriter<Text,Text> recordWriter = null;
+            RecordWriter<Text, Text> recordWriter = null;
             if (isCompressed) {
                 Class<? extends CompressionCodec> codecClass = getOutputCompressorClass(job,
                         GzipCodec.class);
@@ -112,14 +113,14 @@ public class ExcelOutputFormat  extends FileOutputFormat<Text,Text>{
 
                 FSDataOutputStream fileOut = file.getFileSystem(conf).create(file, false);
 
-                recordWriter = new MailRecordWriter<Text,Text>(new DataOutputStream(codec
+                recordWriter = new MailRecordWriter<Text, Text>(new DataOutputStream(codec
                         .createOutputStream(fileOut)), keyValueSeparator);
             } else {
                 Path file = new Path(workPath, baseName);
 
                 FSDataOutputStream fileOut = file.getFileSystem(conf).create(file, false);
 
-                recordWriter = new MailRecordWriter<Text,Text>(fileOut, keyValueSeparator);
+                recordWriter = new MailRecordWriter<Text, Text>(fileOut, keyValueSeparator);
             }
 
             return recordWriter;
@@ -127,7 +128,7 @@ public class ExcelOutputFormat  extends FileOutputFormat<Text,Text>{
 
         @Override
         public void close(TaskAttemptContext context) throws IOException, InterruptedException {
-            Iterator<RecordWriter<Text,Text>> values = this.recordWriters.values().iterator();
+            Iterator<RecordWriter<Text, Text>> values = this.recordWriters.values().iterator();
             while (values.hasNext()) {
                 values.next().close(context);
             }
