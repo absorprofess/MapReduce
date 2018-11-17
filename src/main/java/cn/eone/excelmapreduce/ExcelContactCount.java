@@ -26,6 +26,7 @@ public class ExcelContactCount extends Configured implements Tool {
     /*public static class PhoneReducer extends Reducer<Text, Text, Text, Text> {
         protected void reduce(Text Key, Iterable<Text> Values, Context context) throws IOException, InterruptedException {
             context.write(Key, new Text());
+
         }
     }*/
     @Override
