@@ -17,7 +17,7 @@ import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
 
 public class ExcelContactCount extends Configured implements Tool {
-    public static class PhoneMapper extends Mapper<LongWritable, Text, Text, NullWritable> {
+    public static class HandleMapper extends Mapper<LongWritable, Text, Text, NullWritable> {
         public void map(LongWritable key, Text value, Context context) throws InterruptedException, IOException {
             System.out.println(value.toString());
             context.write(new Text(value.toString()), NullWritable.get());
@@ -51,7 +51,7 @@ public class ExcelContactCount extends Configured implements Tool {
         FileOutputFormat.setOutputPath(job, new Path(args[1]));
 
         // Mapper
-        job.setMapperClass(PhoneMapper.class);
+        job.setMapperClass(HandleMapper.class);
         // Reduce
        /* job.setReducerClass(PhoneReducer.class);*/
 
@@ -71,7 +71,7 @@ public class ExcelContactCount extends Configured implements Tool {
     public static void main(String[] args) throws Exception {
         String[] args0 = {
                 "hdfs://node01:8020/huohua/ods_rawdata/2018-11-13/",
-                "hdfs://node01:8020/out"
+                "hdfs://node01:8020/huohua/tmp"
         };
         int ec = ToolRunner.run(new Configuration(), new ExcelContactCount(), args0);
         System.exit(ec);
