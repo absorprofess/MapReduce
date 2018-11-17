@@ -7,6 +7,7 @@ import org.apache.hadoop.conf.Configured;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.LongWritable;
+import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
@@ -16,10 +17,10 @@ import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
 
 public class ExcelContactCount extends Configured implements Tool {
-    public static class PhoneMapper extends Mapper<LongWritable, Text, Text, Text> {
+    public static class PhoneMapper extends Mapper<LongWritable, Text, Text, NullWritable> {
         public void map(LongWritable key, Text value, Context context) throws InterruptedException, IOException {
             System.out.println(value.toString());
-            context.write(new Text(value.toString()), new Text());
+            context.write(new Text(value.toString()), NullWritable.get());
         }
     }
     /*public static class PhoneReducer extends Reducer<Text, Text, Text, Text> {
@@ -57,12 +58,12 @@ public class ExcelContactCount extends Configured implements Tool {
         // 输出key类型
         job.setMapOutputKeyClass(Text.class);
         // 输出value类型
-        job.setMapOutputValueClass(Text.class);
+        job.setMapOutputValueClass(NullWritable.class);
 
         // 自定义输入格式
         job.setInputFormatClass(ExcelInputFormat.class);
         // 自定义输出格式
-        job.setOutputFormatClass(ExcelOutputFormat.class);
+       // job.setOutputFormatClass(ExcelOutputFormat.class);
 
         return job.waitForCompletion(true) ? 0 : 1;
     }
