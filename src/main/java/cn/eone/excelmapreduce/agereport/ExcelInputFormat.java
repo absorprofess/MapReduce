@@ -1,7 +1,4 @@
-package cn.eone.excelmapreduce;
-
-import java.io.IOException;
-import java.io.InputStream;
+package cn.eone.excelmapreduce.agereport;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
@@ -13,6 +10,9 @@ import org.apache.hadoop.mapreduce.RecordReader;
 import org.apache.hadoop.mapreduce.TaskAttemptContext;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.input.FileSplit;
+
+import java.io.IOException;
+import java.io.InputStream;
 
 public class ExcelInputFormat extends FileInputFormat<LongWritable, Text> {
     @Override
