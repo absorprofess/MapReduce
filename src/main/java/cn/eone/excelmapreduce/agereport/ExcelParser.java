@@ -65,6 +65,7 @@ public class ExcelParser {
                             rowString.append(cell.getStringCellValue().trim());
                         }
                     }
+                    System.out.println(rowString.toString());
                     resultList.add(id + "," + rowString.toString());
                 }
             }

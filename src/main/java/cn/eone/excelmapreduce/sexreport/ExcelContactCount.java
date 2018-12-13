@@ -19,22 +19,15 @@ import java.io.IOException;
 public class ExcelContactCount extends Configured implements Tool {
     public static class HandleMapper extends Mapper<LongWritable, Text, Text, NullWritable> {
         public void map(LongWritable key, Text value, Context context) throws InterruptedException, IOException {
-            System.out.println(value.toString());
             context.write(new Text(value.toString()), NullWritable.get());
         }
     }
-    /*public static class PhoneReducer extends Reducer<Text, Text, Text, Text> {
-        protected void reduce(Text Key, Iterable<Text> Values, Context context) throws IOException, InterruptedException {
-            context.write(Key, new Text());
-
-        }
-    }*/
     @Override
     @SuppressWarnings("deprecation")
     public int run(String[] args) throws Exception {
         // 读取配置文件
         Configuration conf = new Configuration();
-        conf.set("dfs.client.use.datanode.hostname","true");
+        //conf.set("dfs.client.use.datanode.hostname","true");
         // 判断输出路径，如果存在，则删除
         Path mypath = new Path(args[1]);
         FileSystem hdfs = mypath.getFileSystem(conf);
@@ -53,8 +46,7 @@ public class ExcelContactCount extends Configured implements Tool {
 
         // Mapper
         job.setMapperClass(HandleMapper.class);
-        // Reduce
-       /* job.setReducerClass(PhoneReducer.class);*/
+       job.setNumReduceTasks(1);
 
         // 输出key类型
         job.setMapOutputKeyClass(Text.class);
@@ -63,18 +55,13 @@ public class ExcelContactCount extends Configured implements Tool {
 
         // 自定义输入格式
         job.setInputFormatClass(ExcelInputFormat.class);
-        // 自定义输出格式
-       // job.setOutputFormatClass(ExcelOutputFormat.class);
+
 
         return job.waitForCompletion(true) ? 0 : 1;
     }
 
     public static void main(String[] args) throws Exception {
-        String[] args0 = {
-                "hdfs://node01:8020/huohua/ods_rawdata/2018-11-13/",
-                "hdfs://node01:8020/huohua/tmp"
-        };
-        int ec = ToolRunner.run(new Configuration(), new ExcelContactCount(), args0);
+        int ec = ToolRunner.run(new Configuration(), new ExcelContactCount(), args);
         System.exit(ec);
     }
 }
