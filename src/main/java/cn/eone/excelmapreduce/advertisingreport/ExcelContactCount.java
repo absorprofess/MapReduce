@@ -28,6 +28,8 @@ public class ExcelContactCount extends Configured implements Tool {
     public int run(String[] args) throws Exception {
         // 读取配置文件
         Configuration conf = new Configuration();
+        conf.set("fs.defaultFS", "hdfs://node01:8020");
+        conf.set("fs.hdfs.impl", "org.apache.hadoop.hdfs.DistributedFileSystem");
        // conf.set("dfs.client.use.datanode.hostname","true");
         // 判断输出路径，如果存在，则删除
         Path mypath = new Path(args[1]);
